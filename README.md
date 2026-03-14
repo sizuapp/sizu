@@ -30,7 +30,7 @@ SIZU es un tutor académico inteligente diseñado para estudiantes de secundaria
 
 4. **Configurar variables de entorno:**
    - Copia el archivo `.env.example` a `.env`.
-   - Agrega tu `AIzaSyBwphphnGtCz5Ilhy143ZjSxG3gVW7ZBms`.
+   - Agrega tu `GEMINI_API_KEY`.
 
 5. **Ejecutar migraciones y servidor:**
    ```bash
