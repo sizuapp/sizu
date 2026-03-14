@@ -12,7 +12,7 @@ SIZU es un tutor académico inteligente diseñado para estudiantes de secundaria
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/sizuapp/sizu.git
+   git clone https://github.com/jfgoitiac/sizu.git
    cd SIZU
    ```
 
