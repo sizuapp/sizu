@@ -2,7 +2,6 @@
 # exit on error
 set -o errexit
 
-BIDI_NO_RUST=1 pip install -r requirements.txt
+pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
-python manage.py migrate

@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .forms import CustomUserCreationForm
 from .services import chat_with_sizu_tutor, generate_quiz_from_pdf, evaluate_semantic_response
 import os
+import tempfile
 from django.conf import settings
 from pathlib import Path
 
@@ -28,12 +29,12 @@ def dashboard(request):
     if request.method == 'POST':
         if request.FILES.get('pdf_file'):
             pdf_file = request.FILES['pdf_file']
-            # Guardar el archivo temporalmente
-            temp_path = Path(settings.MEDIA_ROOT) / pdf_file.name
-            os.makedirs(str(temp_path.parent), exist_ok=True)
-            with open(str(temp_path), 'wb') as f:
+            
+            # Guardar el archivo temporalmente de forma segura para entornos efímeros (Render)
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp:
                 for chunk in pdf_file.chunks():
-                    f.write(chunk)
+                    tmp.write(chunk)
+                temp_path = tmp.name
 
             # Generar el quiz
             try:
@@ -43,10 +44,12 @@ def dashboard(request):
                     request.session['current_quiz'] = quiz
                 else:
                     error_message = quiz_data  # Mensaje de error devuelto por el servicio
-                # Limpiar el archivo temporal
-                os.remove(str(temp_path))
             except Exception as e:
                 error_message = f"Error al generar el quiz: {str(e)}"
+            finally:
+                # Asegurar limpieza del archivo temporal incluso si hay error
+                if os.path.exists(temp_path):
+                    os.remove(temp_path)
 
             # Ganar puntos (solo si no hubo error, opcional, pero lo dejo como estaba)
             if not error_message:
