@@ -1,0 +1,16 @@
+# Python
+*.py[cod]
+__pycache__/
+venv/
+.venv/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Configuración sensible
+.env
+
+# Otros
+.DS_Store

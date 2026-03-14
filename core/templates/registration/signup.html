@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Cuenta - SIZU{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[80vh] py-10">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg border border-gray-100">
+        <div class="text-center mb-8">
+            <div class="inline-block p-3 rounded-full bg-indigo-50 mb-4">
+                <img src="{% static 'logo_sizu.png' %}" alt="Sizu Logo" class="h-16 w-16 mx-auto">
+            </div>
+            <h2 class="text-3xl font-bold text-[#0f3567]">Únete a SIZU</h2>
+            <p class="text-gray-500 mt-2">Comienza tu aventura de aprendizaje hoy mismo</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-5" x-data="{ show: false }">
+                    {{ field.label_tag }}
+                    <div class="relative">
+                        {{ field }}
+                        {% if 'password' in field.name %}
+                            <button type="button" @click="show = !show; $el.previousElementSibling.type = show ? 'text' : 'password'" class="absolute right-0 top-0 bottom-4 px-3 flex items-center text-gray-400 hover:text-[#6420CB] transition-colors focus:outline-none">
+                                <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg x-show="show" style="display: none;" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.574-2.59M5.75 5.75l12.5 12.5M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 1l18 18" />
+                                </svg>
+                            </button>
+                        {% endif %}
+                    </div>
+                    {% if field.help_text %}
+                        <div class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-100 -mt-2 mb-1 leading-relaxed [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-1">
+                            {{ field.help_text|safe }}
+                        </div>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-full bg-[#0f3567] hover:bg-[#0a254a] text-white font-bold py-3 px-4 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-md mt-6">
+                Crear Cuenta
+            </button>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-gray-600">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="font-semibold text-[#6420CB] hover:underline">Inicia sesión</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
