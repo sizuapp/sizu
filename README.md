@@ -12,7 +12,7 @@ SIZU es un tutor académico inteligente diseñado para estudiantes de secundaria
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/jfgoitiac/sizu.git
+   git clone https://github.com/sizuapp/sizu.git
    cd SIZU
    ```
 
@@ -30,7 +30,7 @@ SIZU es un tutor académico inteligente diseñado para estudiantes de secundaria
 
 4. **Configurar variables de entorno:**
    - Copia el archivo `.env.example` a `.env`.
-   - Agrega tu `GEMINI_API_KEY`.
+   - Agrega tu `AIzaSyBwphphnGtCz5Ilhy143ZjSxG3gVW7ZBms`.
 
 5. **Ejecutar migraciones y servidor:**
    ```bash
