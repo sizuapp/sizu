@@ -1,16 +1,27 @@
-# Python
-*.py[cod]
-__pycache__/
+# Archivos de entorno
+# ¡NUNCA subas tu archivo .env a Git! Contiene secretos como tu API Key.
+.env
+
+# Entorno virtual de Python
+# El nombre puede variar (venv, .venv, env, etc.), incluimos los más comunes.
 venv/
 .venv/
+env/
 
-# Django
+# Archivos de caché y compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de base de datos de desarrollo (si usaras SQLite)
 db.sqlite3
+
+# Directorios de archivos estáticos y de medios de Django
+# Estos se generan y no deben estar en el control de versiones.
 staticfiles/
 media/
 
-# Configuración sensible
-.env
-
-# Otros
-.DS_Store
+# Archivos de configuración de IDEs y editores
+.idea/
+.vscode/
