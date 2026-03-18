@@ -4,12 +4,13 @@ load_dotenv()
 api_key = os.getenv('GEMINI_API_KEY')
 print('API_KEY present:', bool(api_key))
 try:
-    import google.genai as genai
-    client = genai.Client(api_key=api_key)
-    model = 'models/gemini-2.5-flash'
+    import google.generativeai as genai
+    genai.configure(api_key=api_key)
+    model = 'gemini-pro'
     prompt = 'Dime en una línea qué es la fotosíntesis.'
     print('Calling generate_content...')
-    resp = client.models.generate_content(model=model, contents=prompt)
+    gemini_model = genai.GenerativeModel(model)
+    resp = gemini_model.generate_content(prompt)
     print('RESP REPR:', repr(resp))
     print('RESP DIR:', dir(resp))
     # print attributes
@@ -29,4 +30,3 @@ except Exception as e:
     print('Exception:', e)
     traceback.print_exc()
 print('DONE')
-
