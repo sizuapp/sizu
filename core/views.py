@@ -31,7 +31,8 @@ def dashboard(request):
                 # 2. Si obtenemos preguntas válidas, las guardamos en la sesión
                 if isinstance(questions, list):
                     request.session['quiz_data'] = questions
-                    return render(request, 'core/quiz.html', {'questions': questions})
+                    # Usamos 'quiz' en lugar de 'questions' para coincidir con dashboard.html
+                    return render(request, 'core/dashboard.html', {'form': form, 'quiz': questions, 'chat_history': []})
                 else:
                     # Si questions es un string, es un mensaje de error del servicio
                     error_msg = questions if isinstance(questions, str) else "Error generando el quiz."
@@ -56,8 +57,8 @@ def submit_quiz(request):
         
         for q in questions:
             question_id = str(q.get('id'))
-            # El name del input en HTML debe ser "question_ID"
-            user_answer = request.POST.get(f'question_{question_id}')
+            # El name del input en HTML es "answer_ID" según tu dashboard.html
+            user_answer = request.POST.get(f'answer_{question_id}')
             correct_answer = q.get('correct')
             
             is_correct = user_answer == correct_answer
