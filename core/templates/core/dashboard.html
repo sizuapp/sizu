@@ -46,7 +46,7 @@
         {% if quiz %}
         <div class="mt-8">
             <h3 class="text-2xl font-bold text-[#0f3567] mb-4 text-center">Tu Quiz está Listo</h3>
-            <form method="POST" @submit="showResults = true">
+            <form action="{% url 'submit_quiz' %}" method="POST" @submit="showResults = true">
                 {% csrf_token %}
                 {% for question in quiz %}
                 <div class="mb-6 bg-gray-50 p-6 rounded-lg shadow">
@@ -184,7 +184,7 @@
 
         <!-- Input Area -->
         <div class="p-3 bg-white border-t border-gray-100">
-            <form @submit.prevent="if (!message.trim()) return; messages.push({sender: 'user', text: message}); const userMsg = message; message = ''; isLoading = true; $nextTick(() => { const container = document.getElementById('chat-messages'); container.scrollTop = container.scrollHeight; }); fetch('/api/tutor/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}' }, body: 'message=' + encodeURIComponent(userMsg) }).then(response => response.json()).then(data => { isLoading = false; if (data.reply) { messages.push({sender: 'bot', text: data.reply}); } else { messages.push({sender: 'bot', text: 'Lo siento, tuve un problema.'}); } $nextTick(() => { const container = document.getElementById('chat-messages'); container.scrollTop = container.scrollHeight; }); }).catch(err => { isLoading = false; messages.push({sender: 'bot', text: 'Error de conexión.'}); });" class="flex gap-2 items-center">
+            <form @submit.prevent="if (!message.trim()) return; messages.push({sender: 'user', text: message}); const userMsg = message; message = ''; isLoading = true; $nextTick(() => { const container = document.getElementById('chat-messages'); container.scrollTop = container.scrollHeight; }); fetch('{% url 'chat_api' %}', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}' }, body: 'message=' + encodeURIComponent(userMsg) }).then(response => response.json()).then(data => { isLoading = false; if (data.reply) { messages.push({sender: 'bot', text: data.reply}); } else { messages.push({sender: 'bot', text: 'Lo siento, tuve un problema.'}); } $nextTick(() => { const container = document.getElementById('chat-messages'); container.scrollTop = container.scrollHeight; }); }).catch(err => { isLoading = false; messages.push({sender: 'bot', text: 'Error de conexión.'}); });" class="flex gap-2 items-center">
                 <input type="text" x-model="message" placeholder="Escribe tu duda..." class="flex-1 bg-gray-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-[#6420CB] focus:bg-white transition">
                 <button type="submit" class="bg-[#6420CB] text-white rounded-full p-2 hover:bg-[#5019a0] transition shadow-md disabled:opacity-50" :disabled="isLoading || !message.trim()">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
@@ -196,7 +196,7 @@
     <!-- Botón Flotante -->
     
     <button @click="open = !open" 
-            class="bg-[#6420CB] hover:bg-[#5019a0] text-white rounded-full p-4 shadow-xl transition-all transform hover:scale-105 flex items-center justify-center group animate-bounce hover:animate-none">
+            class="relative bg-[#6420CB] hover:bg-[#5019a0] text-white rounded-full p-4 shadow-xl transition-all transform hover:scale-105 flex items-center justify-center group animate-bounce hover:animate-none">
         <span x-show="!open" class="absolute -top-1 -right-1 flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
