@@ -13,7 +13,7 @@ api_key = os.getenv('GEMINI_API_KEY')
 genai.configure(api_key=api_key)
 
 # Modelo por defecto (ajustable)
-DEFAULT_MODEL = 'gemini-pro'
+DEFAULT_MODEL = 'models/gemini-2.5-flash'
 
 def _extract_text_from_genai_response(resp):
     # El manejo de la respuesta puede simplificarse con el nuevo SDK
@@ -35,20 +35,29 @@ def _clean_json_response(text):
     text = re.sub(r'\s*```$', '', text, flags=re.MULTILINE)
     return text.strip()
 
-def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
-    text = ""
-    for page in reader.pages:
-        page_text = page.extract_text() or ""
-        text += page_text + "\n"
-    return text
+def extract_text_from_pdf(pdf_file):
+    """Extrae texto de un archivo PDF de manera segura."""
+    try:
+        # Asegurar que el puntero del archivo esté al inicio
+        if hasattr(pdf_file, 'seek'):
+            pdf_file.seek(0)
+        
+        reader = PdfReader(pdf_file)
+        text = ""
+        for page in reader.pages:
+            page_text = page.extract_text() or ""
+            text += page_text + "\n"
+        return text
+    except Exception as e:
+        print(f"Error leyendo PDF: {e}")
+        return ""
 
 
-def generate_quiz_from_pdf(pdf_path):
+def generate_quiz_from_pdf(pdf_file):
     """Genera un quiz interactivo desde el PDF con esquema JSON estricto."""
-    text = extract_text_from_pdf(pdf_path)
+    text = extract_text_from_pdf(pdf_file)
     if not text.strip():
-        return "Error: No se pudo extraer texto del PDF. Asegúrate de que el PDF contenga texto legible."
+        return "Error: No se pudo extraer texto. El PDF podría ser una imagen o estar dañado."
 
     prompt = f"""
 Basado en este texto, genera un quiz interactivo para estudiantes de 12-15 años, con 5 preguntas variadas.

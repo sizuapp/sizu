@@ -3,4 +3,4 @@ from django.db import models
 
 class User(AbstractUser):
     """Modelo de usuario personalizado para SIZU."""
-    pass
+    sizu_points = models.IntegerField(default=0, help_text="Puntos acumulados por el estudiante")
